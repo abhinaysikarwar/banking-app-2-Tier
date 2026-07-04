@@ -1,7 +1,8 @@
 name: Test GitHub Actions Workflow
 on:
   push:
-
+    branches:
+      - main
 
 jobs:
   working-job:
