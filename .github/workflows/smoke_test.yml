@@ -7,6 +7,8 @@ jobs:
   smoke:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::949678235787:role/github-action-deploy-policy
@@ -25,9 +27,10 @@ jobs:
             --targets "Key=tag:App,Values=flask" \
             --document-name "AWS-RunShellScript" \
             --parameters '{"commands":[
-              "aws s3 cp s3://949678235787-devops-scripts/smoke_test.py /tmp/smoke_test.py /tmpr/smoke_test.py"
+              "aws s3 cp s3://949678235787-devops-scripts/smoke_test.py /tmp/smoke_test.py",
+
               "python3 /tmp/smoke_test.py"
-              ]}' 
+              ]}' \
             
             --query 'Command.CommandId' \
             --output text \
