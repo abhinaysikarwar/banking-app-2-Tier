@@ -31,7 +31,6 @@ jobs:
 
               "python3 /tmp/smoke_test.py"
               ]}' \
-            
             --query 'Command.CommandId' \
             --output text \
             --region us-east-1)
