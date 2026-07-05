@@ -1,7 +1,7 @@
 name : Application Deployment on Aws 
 
 on:
-  workflow_dispatch
+  workflow_call: 
 
 jobs:
   working-job:
