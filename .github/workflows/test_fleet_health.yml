@@ -32,11 +32,11 @@ jobs:
             --query 'Command.CommandId' \
             --output text
           )
-
+        
           sleep 30
 
           aws ssm list-command-invocations \
-            --command-id $CMD_ID \
-            --details \
+            --command-id "${{steps.help.outputs.CMD_ID}}" --details \
+            --region us-east-1 \
             --query 'CommandInvocations[*].{Instance:InstanceId,IP:CommandPlugins[0].Output}' \
-            --output table
+            --output text
