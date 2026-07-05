@@ -1,9 +1,9 @@
 name: Main Pipeline for Orchestration
 
 on:
-  push: 
+  push:
     branches:
-      -main
+      - main
   workflow_dispatch:
 
 jobs:
@@ -12,9 +12,9 @@ jobs:
     permissions:
       id-token: write
       contents: read
-  
+
   test_fleet_health_env:
-    needs: verify_connection
+    needs: verify
     uses: ./.github/workflows/test_fleet_health.yml
     permissions:
       id-token: write
@@ -25,10 +25,10 @@ jobs:
     uses: ./.github/workflows/smoke_test.yml
     permissions:
       id-token: write
-      contents: read   
+      contents: read
 
   build_push:
-    needs: smoke_test 
+    needs: smoke_test
     uses: ./.github/workflows/bulid_push.yml
     permissions:
       id-token: write

@@ -1,36 +1,42 @@
-name: Test Fleet health and Env Variables
+name: Test fleet
 
 on:
-  workflow_call
+  workflow_call:
 
 permissions:
-  id-token: write
   contents: read
+  id-token: write
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: aws-actions/configure-aws-credentials@v4
+      - uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::949678235787:role/github-action-deploy-role
+          role-to-assume: arn:aws:iam::331146039200:role/github-action-deploy-policy
           aws-region: us-east-1
 
       - name: Print Private IPs
         run: |
           CMD_ID=$(aws ssm send-command \
-            --targets "key=tag:App,Values=flask" \
+            --targets "Key=tag:App,Values=flask" \
             --document-name "AWS-RunShellScript" \
-            --parameters '{"commands":["hostname -I"]}' \
-            --query 'Commands.CommandId' \
+            --parameters '{"commands":[
+              "hostname -I"
+              "docker --version 2>/dev/null || echo Docker not installed"
+              "aws --version 2>/dev/null || echo AWS CLI not installed"
+              "mysql --version 2>/dev/null || echo MySQL not installed"
+              "aws ssm get-parameters-by-path --path /application/banking --with-decryption --region us-east-1"
+              ]}' \
+            --query 'Command.CommandId' \
             --output text
           )
 
           sleep 30
 
           aws ssm list-command-invocations \
-            --command-id "$CMD_ID" \
+            --command-id $CMD_ID \
             --details \
-            --query "CommandInvocations[*].{Instance:InstanceId,IP:CommandPlugins[0].Output}" \
+            --query 'CommandInvocations[*].{Instance:InstanceId,IP:CommandPlugins[0].Output}' \
             --output table
