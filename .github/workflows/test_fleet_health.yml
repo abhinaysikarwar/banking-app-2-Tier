@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::331146039200:role/github-action-deploy-policy
+          role-to-assume: arn:aws:iam::949678235787:role/github-action-deploy-policy
           aws-region: us-east-1
 
       - name: Print Private IPs
