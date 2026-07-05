@@ -1,0 +1,12 @@
+name : Smoke testing 
+
+on:
+  workflow_dispatch
+
+jobs:
+  working-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name : Echo Message
+        run : echo "Smoke testing is working successfully ✅"
