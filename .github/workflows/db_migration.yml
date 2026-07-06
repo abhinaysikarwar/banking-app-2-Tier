@@ -1,14 +1,14 @@
 name: Intialize Database
 
 on:
-  workflow_dispatch
+  workflow_dispatch:
 
 permissions:
   id-token:write
   contents:read
 
 jobs:
-  smoke:
+  init_db:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
