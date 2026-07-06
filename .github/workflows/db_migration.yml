@@ -27,7 +27,3 @@ jobs:
           aws s3 cp init.sql s3://s3-lakhan-bucket/init.sql
           aws s3 cp init.py s3://s3-lakhan-bucket/init.py
           echo "File Uploaded to Bucket..✅"
-
-
-
-
