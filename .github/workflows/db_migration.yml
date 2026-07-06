@@ -23,12 +23,6 @@ jobs:
 
       - name: Upload file on s3
         run: |
-          aws s3 cp init.sql \
-          s3://s3-lakhan-bucket/init.sql \
-          --region us-east-1
-
-      - name: Run smoke test on fleet
-        run: |
           aws s3 mb s3://s3-lakhan-bucket --region us-east-1 2>/dev/null ||true
           aws s3 cp init.sql s3://s3-lakhan-bucket/init.sql
           aws s3 cp init.py s3://s3-lakhan-bucket/init.py
