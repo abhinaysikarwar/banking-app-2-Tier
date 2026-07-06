@@ -1,4 +1,4 @@
-name: Intializing Database
+name: Intialize Database
 
 on:
   workflow_dispatch
@@ -12,6 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          repository:abhinaysikarwar/banking-app-2-Tier
+          ref:main
 
       - uses: aws-actions/configure-aws-credentials@v4
         with:
