@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
 
 permissions:
-  id-token:write
-  contents:read
+  id-token: write
+  contents: read
 
 jobs:
   init_db:
@@ -13,8 +13,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          repository:abhinaysikarwar/banking-app-2-Tier
-          ref:main
+          repository: abhinaysikarwar/banking-app-2-Tier
+          ref: main
 
       - uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -23,7 +23,7 @@ jobs:
 
       - name: Upload file on s3
         run: |
-          aws s3 mb s3://s3-lakhan-bucket --region us-east-1 2>/dev/null ||true
+          aws s3 mb s3://s3-lakhan-bucket --region us-east-1 2>/dev/null || true
           aws s3 cp init.sql s3://s3-lakhan-bucket/init.sql
           aws s3 cp init.py s3://s3-lakhan-bucket/init.py
           echo "File Uploaded to Bucket..✅"
