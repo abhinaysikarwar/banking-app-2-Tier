@@ -1,0 +1,36 @@
+name: Intializing Database
+
+on:
+  workflow_dispatch
+
+permissions:
+  id-token:write
+  contents:read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::949678235787:role/github-action-deploy-policy
+          aws-region: us-east-1
+
+      - name: Upload file on s3
+        run: |
+          aws s3 cp init.sql \
+          s3://s3-lakhan-bucket/init.sql \
+          --region us-east-1
+
+      - name: Run smoke test on fleet
+        run: |
+          aws s3 mb s3://949678235787-s3-lakhan-bucket --region us-east-1 2>/dev/null ||true
+          aws s3 cp init.sql s3://949678235787-s3-lakhan-bucket/init.sql
+          aws s3 cp init.py s3://949678235787-s3-lakhan-bucket/init.py
+          echo "File Uploaded to Bucket..✅"
+
+
+
+
