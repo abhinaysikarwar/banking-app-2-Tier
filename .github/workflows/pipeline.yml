@@ -16,7 +16,7 @@ jobs:
   
 
   smoke_test:
-    needs: verify_connection
+    needs: verify
     uses: ./.github/workflows/smoke_test.yml
     permissions:
       id-token: write
