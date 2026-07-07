@@ -35,3 +35,9 @@ for statement in sql.split(";"):
 
     conn.commit()
     print("✅Database connected succesfully")
+
+except Exception as e:
+    print("Error :",e)
+
+finally:
+    conn.close()

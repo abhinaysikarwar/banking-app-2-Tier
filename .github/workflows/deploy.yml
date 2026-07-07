@@ -1,12 +1,48 @@
-name : Application Deployment on Aws 
+name : Application Deploying On AWS
 
 on:
-  workflow_call: 
+  workflow_call:
+
+  
+permissions:
+  id-token: write
+  contents: read  
+
+env:
+  VERSION: v1
+  IMAGE: 949678235787.dkr.ecr.us-east-1.amazonaws.com/flaskapp-simple-bank
+  REGION: us-east-1
+  S3_BUCKET: s3://s3-lakhan-bucket
 
 jobs:
-  working-job:
+  build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name : Echo Message
-        run : echo "Deployment application is working successfully ✅"
+      - uses: actions/checkout@v4
+        with:
+          repository: abhinaysikarwar/banking-app-2-Tier
+          ref: main
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::949678235787:role/github-action-deploy-policy
+          aws-region: ${{ env.REGION }}
+
+      - name: Login to ECR
+        run: |
+          aws ecr get-login-password --region ${{ env.REGION }} | \
+          docker login --username AWS --password-stdin \
+          720800607391.dkr.ecr.${{ env.REGION }}.amazonaws.com
+          echo "Login Successfull to ECR ✅"
+
+      - name: Build and Push image
+        run: |
+          docker build -t ${{env.IMAGE}}:${{env.VERSION}} .
+          docker push ${{env.IMAGE}}:${{env.VERSION}}
+          echo "Image Pushed : ${{env.VERSION}} ✅"
+      
+
+      - name: Upload Docker-Compose to S3
+        run: |
+          aws s3 cp docker-compose.yml ${{ env.S3_BUCKET }}/docker-compose.yml --region ${{ env.REGION }}
+          echo "Docker compose Uploaded ✅"
