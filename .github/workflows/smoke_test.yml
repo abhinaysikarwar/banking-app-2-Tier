@@ -1,7 +1,7 @@
 name: Smoke testing
 
 on:
-  workflow_dispatch:
+  workflow_call:
 
 jobs:
   smoke:
@@ -17,7 +17,7 @@ jobs:
 
       - name: Upload smoke_test.py to S3
         run: |
-          aws s3 mb s3:///s3-lakhan-bucket --region us-east-1 2>/dev/null || true
+          aws s3 mb s3://s3-lakhan-bucket --region us-east-1 2>/dev/null || true
           aws s3 cp smoke_test.py s3://s3-lakhan-bucket/smoke_test.py --region us-east-1
 
       - name: Run Smoke Test on Fleet
@@ -31,7 +31,8 @@ jobs:
                 "aws s3 cp s3://s3-lakhan-bucket/smoke_test.py /tmp/smoke_test.py",
                 "python3 /tmp/smoke_test.py || exit 1",
                 "rm -f /tmp/smoke_test.py"
-            ]}' \
+              ]
+            }' \
             --query "Command.CommandId" \
             --output text \
             --region us-east-1)
