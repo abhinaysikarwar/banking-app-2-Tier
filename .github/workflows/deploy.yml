@@ -46,7 +46,7 @@ jobs:
         id: deploy
         run: |
           CMD_ID=$(aws ssm send-command \
-            --targets "Key=tag:App,Values=flask" \
+            --targets "Key=tag:APP,Values=flask" \
             --document-name "AWS-RunShellScript" \
             --comment "Deploy ${{ env.VERSION }} by ${{ github.actor }}" \
             --parameters '{"commands":[
