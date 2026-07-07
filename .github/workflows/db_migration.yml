@@ -32,7 +32,7 @@ jobs:
         id: init
         run: |
           CMD_ID=$(aws ssm send-command \
-            --targets "Key=tag:App,Values=flask" \
+            --targets "Key=tag:APP,Values=flask" \
             --document-name "AWS-RunShellScript" \
             --parameters '{"commands":[
               "aws s3 cp s3://s3-lakhan-bucket/init.sql /tmp/init.sql",
